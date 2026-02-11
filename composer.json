@@ -3,13 +3,25 @@
     "description": "Per-item discount messages and strikethrough pricing in the cart",
     "type": "magento2-module",
     "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.magento.com/"
+        },
+        {
+            "type": "path",
+            "url": "../../../magento2-module-discount-exclusion"
+        }
+    ],
     "require": {
         "php": "^8.3",
         "magento/framework": "^103.0",
         "magento/module-quote": "^101.0",
         "magento/module-sales-rule": "^101.0",
         "magento/module-checkout": "^100.0",
-        "pixelperfectat/magento2-module-discount-exclusion": "^1.0"
+        "pixelperfectat/magento2-module-discount-exclusion": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0"
@@ -22,7 +34,11 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "PixelPerfect\\CheckoutDiscountDisplay\\Test\\": "Test/"
-        }
+            "PixelPerfect\\CheckoutDiscountDisplay\\Test\\": "Test/",
+            "Amasty\\Affiliate\\": "Test/Stub/Amasty/Affiliate/"
+        },
+        "classmap": [
+            "Test/Stub/Magento/"
+        ]
     }
 }

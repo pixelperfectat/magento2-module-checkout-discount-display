@@ -3,7 +3,7 @@
 namespace PixelPerfect\CheckoutDiscountDisplay\Test\Unit\Service;
 
 use Magento\Framework\Pricing\PriceCurrencyInterface;
-use Magento\Quote\Model\Quote\Item\AbstractItem;
+use Magento\Quote\Model\Quote\Item;
 use Magento\SalesRule\Api\Data\DiscountDataInterface;
 use Magento\SalesRule\Api\Data\RuleDiscountInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -139,24 +139,18 @@ class ItemMessageServiceTest extends TestCase
 
     public function testCouponDiscountMessage(): void
     {
-        $this->affiliateDiscountResolver->method('getAffiliateRuleIds')->willReturn(['10']);
-        $this->affiliateDiscountResolver->method('getAffiliateDiscountForItem')->willReturn(0.0);
+        $affiliateResolver = $this->createMock(AffiliateDiscountResolverInterface::class);
+        $affiliateResolver->method('getAffiliateRuleIds')->willReturn(['10']);
+        $affiliateResolver->method('getAffiliateDiscountForItem')->willReturn(0.0);
 
-        $service = new ItemMessageService(
-            $this->affiliateDiscountResolver,
-            $this->priceCurrency,
-        );
+        $service = new ItemMessageService($affiliateResolver, $this->priceCurrency);
 
         $couponDiscount = $this->createDiscount('99', 3.00);
 
-        $extensionAttributes = $this->getMockBuilder(\Magento\Quote\Api\Data\CartItemExtensionInterface::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['getDiscounts'])
-            ->getMockForAbstractClass();
+        $extensionAttributes = $this->createMock(\Magento\Quote\Api\Data\CartItemExtensionInterface::class);
         $extensionAttributes->method('getDiscounts')->willReturn([$couponDiscount]);
 
-        $item = $this->createItemMock();
-        $item->method('getExtensionAttributes')->willReturn($extensionAttributes);
+        $item = $this->createItemMock(extensionAttributes: $extensionAttributes);
         $item->expects($this->once())->method('addMessage');
 
         $service->addMessagesForItem($item);
@@ -164,24 +158,18 @@ class ItemMessageServiceTest extends TestCase
 
     public function testCouponDiscountSkipsAffiliateRules(): void
     {
-        $this->affiliateDiscountResolver->method('getAffiliateRuleIds')->willReturn(['10']);
-        $this->affiliateDiscountResolver->method('getAffiliateDiscountForItem')->willReturn(5.00);
+        $affiliateResolver = $this->createMock(AffiliateDiscountResolverInterface::class);
+        $affiliateResolver->method('getAffiliateRuleIds')->willReturn(['10']);
+        $affiliateResolver->method('getAffiliateDiscountForItem')->willReturn(5.00);
 
-        $service = new ItemMessageService(
-            $this->affiliateDiscountResolver,
-            $this->priceCurrency,
-        );
+        $service = new ItemMessageService($affiliateResolver, $this->priceCurrency);
 
         $affiliateDiscount = $this->createDiscount('10', 5.00);
 
-        $extensionAttributes = $this->getMockBuilder(\Magento\Quote\Api\Data\CartItemExtensionInterface::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['getDiscounts'])
-            ->getMockForAbstractClass();
+        $extensionAttributes = $this->createMock(\Magento\Quote\Api\Data\CartItemExtensionInterface::class);
         $extensionAttributes->method('getDiscounts')->willReturn([$affiliateDiscount]);
 
-        $item = $this->createItemMock();
-        $item->method('getExtensionAttributes')->willReturn($extensionAttributes);
+        $item = $this->createItemMock(extensionAttributes: $extensionAttributes);
 
         // Should get affiliate message only, NOT a coupon message for rule 10
         $item->expects($this->once())->method('addMessage');
@@ -192,23 +180,20 @@ class ItemMessageServiceTest extends TestCase
     /**
      * @param array<string, mixed> $data
      */
-    private function createItemMock(array $data = []): AbstractItem&MockObject
-    {
-        $item = $this->getMockBuilder(AbstractItem::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['addMessage', 'getExtensionAttributes', 'getProduct'])
-            ->addMethods(['getData'])
-            ->getMock();
+    private function createItemMock(
+        array $data = [],
+        ?\Magento\Quote\Api\Data\CartItemExtensionInterface $extensionAttributes = null,
+    ): Item&MockObject {
+        $item = $this->createMock(Item::class);
 
         $item->method('getData')->willReturnCallback(
             fn(string $key) => $data[$key] ?? null
         );
 
-        $extensionAttributes = $this->getMockBuilder(\Magento\Quote\Api\Data\CartItemExtensionInterface::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['getDiscounts'])
-            ->getMockForAbstractClass();
-        $extensionAttributes->method('getDiscounts')->willReturn(null);
+        if ($extensionAttributes === null) {
+            $extensionAttributes = $this->createMock(\Magento\Quote\Api\Data\CartItemExtensionInterface::class);
+            $extensionAttributes->method('getDiscounts')->willReturn(null);
+        }
         $item->method('getExtensionAttributes')->willReturn($extensionAttributes);
 
         return $item;
