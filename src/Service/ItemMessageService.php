@@ -75,17 +75,17 @@ class ItemMessageService implements ItemMessageServiceInterface
 
         if ($simpleAction === Rule::BY_PERCENT_ACTION) {
             $item->addMessage((string) __(
-                'Coupon adjusted to %1% (from %2%) — this product already has a %3% discount.',
-                number_format((float) ($params['additionalDiscountPercent'] ?? 0), 0),
-                number_format((float) ($params['ruleDiscountPercent'] ?? 0), 0),
+                'Already %1% discounted — discount reduced from %2% to %3%.',
                 number_format((float) ($params['existingDiscountPercent'] ?? 0), 0),
+                number_format((float) ($params['ruleDiscountPercent'] ?? 0), 0),
+                number_format((float) ($params['additionalDiscountPercent'] ?? 0), 0),
             ));
         } elseif ($simpleAction === Rule::BY_FIXED_ACTION) {
             $item->addMessage((string) __(
-                'Coupon adjusted to %1 (from %2) — this product already has a %3 discount.',
-                $this->formatPrice((float) ($params['additionalDiscountAmount'] ?? 0)),
-                $this->formatPrice((float) ($params['ruleDiscountAmount'] ?? 0)),
+                'Already %1 discounted — discount reduced from %2 to %3.',
                 $this->formatPrice((float) ($params['existingDiscountAmount'] ?? 0)),
+                $this->formatPrice((float) ($params['ruleDiscountAmount'] ?? 0)),
+                $this->formatPrice((float) ($params['additionalDiscountAmount'] ?? 0)),
             ));
         }
     }
@@ -106,9 +106,20 @@ class ItemMessageService implements ItemMessageServiceInterface
             }
         }
 
-        if ($couponTotal > 0.0) {
+        if ($couponTotal <= 0.0) {
+            return;
+        }
+
+        $couponCode = (string) $item->getQuote()->getCouponCode();
+        if ($couponCode !== '') {
             $item->addMessage((string) __(
-                '%1 coupon discount applied.',
+                'Coupon "%1": %2 discount.',
+                $couponCode,
+                $this->formatPrice($couponTotal),
+            ));
+        } else {
+            $item->addMessage((string) __(
+                '%1 discount applied.',
                 $this->formatPrice($couponTotal),
             ));
         }
