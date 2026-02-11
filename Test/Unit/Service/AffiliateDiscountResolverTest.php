@@ -3,6 +3,7 @@
 namespace PixelPerfect\CheckoutDiscountDisplay\Test\Unit\Service;
 
 use Amasty\Affiliate\Model\Rule\AffiliateQuoteResolver;
+use Magento\Quote\Model\Quote\Item;
 use Magento\Quote\Model\Quote\Item\AbstractItem;
 use Magento\SalesRule\Api\Data\DiscountDataInterface;
 use Magento\SalesRule\Api\Data\RuleDiscountInterface;
@@ -44,13 +45,10 @@ class AffiliateDiscountResolverTest extends TestCase
         $this->affiliateQuoteResolver->method('resolveRuleIds')->willReturn(['10']);
         $resolver = new AffiliateDiscountResolver($this->affiliateQuoteResolver, $this->logger);
 
-        $extensionAttributes = $this->getMockBuilder(\Magento\Quote\Api\Data\CartItemExtensionInterface::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['getDiscounts'])
-            ->getMockForAbstractClass();
+        $extensionAttributes = $this->createMock(\Magento\Quote\Api\Data\CartItemExtensionInterface::class);
         $extensionAttributes->method('getDiscounts')->willReturn(null);
 
-        $item = $this->createMock(AbstractItem::class);
+        $item = $this->createMock(Item::class);
         $item->method('getExtensionAttributes')->willReturn($extensionAttributes);
 
         $this->assertSame(0.0, $resolver->getAffiliateDiscountForItem($item));
@@ -65,14 +63,11 @@ class AffiliateDiscountResolverTest extends TestCase
         $couponDiscount = $this->createDiscount('99', 3.00);
         $anotherAffiliateDiscount = $this->createDiscount('20', 2.50);
 
-        $extensionAttributes = $this->getMockBuilder(\Magento\Quote\Api\Data\CartItemExtensionInterface::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['getDiscounts'])
-            ->getMockForAbstractClass();
+        $extensionAttributes = $this->createMock(\Magento\Quote\Api\Data\CartItemExtensionInterface::class);
         $extensionAttributes->method('getDiscounts')
             ->willReturn([$affiliateDiscount, $couponDiscount, $anotherAffiliateDiscount]);
 
-        $item = $this->createMock(AbstractItem::class);
+        $item = $this->createMock(Item::class);
         $item->method('getExtensionAttributes')->willReturn($extensionAttributes);
 
         $this->assertSame(7.50, $resolver->getAffiliateDiscountForItem($item));
@@ -86,13 +81,10 @@ class AffiliateDiscountResolverTest extends TestCase
 
         $resolver = new AffiliateDiscountResolver($this->affiliateQuoteResolver, $this->logger);
 
-        $extensionAttributes = $this->getMockBuilder(\Magento\Quote\Api\Data\CartItemExtensionInterface::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['getDiscounts'])
-            ->getMockForAbstractClass();
+        $extensionAttributes = $this->createMock(\Magento\Quote\Api\Data\CartItemExtensionInterface::class);
         $extensionAttributes->method('getDiscounts')->willReturn([]);
 
-        $item = $this->createMock(AbstractItem::class);
+        $item = $this->createMock(Item::class);
         $item->method('getExtensionAttributes')->willReturn($extensionAttributes);
 
         $resolver->getAffiliateDiscountForItem($item);
