@@ -1,0 +1,8 @@
+type CartItemPrices {
+    regular_price: Money @doc(description: "The regular catalog price before any discounts.")
+        @resolver(class: "PixelPerfect\\CheckoutDiscountDisplay\\Model\\Resolver\\CartItemRegularPrice")
+    has_discount: Boolean @doc(description: "Whether the item has any discount applied.")
+        @resolver(class: "PixelPerfect\\CheckoutDiscountDisplay\\Model\\Resolver\\CartItemHasDiscount")
+    discount_messages: [String] @doc(description: "Per-item discount explanation messages.")
+        @resolver(class: "PixelPerfect\\CheckoutDiscountDisplay\\Model\\Resolver\\CartItemDiscountMessages")
+}
