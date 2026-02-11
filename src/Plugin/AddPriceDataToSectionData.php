@@ -22,6 +22,9 @@ class AddPriceDataToSectionData
     /**
      * Add regular price, discount flag and discount messages to section data
      *
+     * Ensures quote totals are collected before reading item messages, since
+     * the observer that populates messages fires during collectTotals().
+     *
      * @param AbstractItem $subject
      * @param array<string, mixed> $result
      * @param Item $item
@@ -42,10 +45,30 @@ class AddPriceDataToSectionData
         }
 
         if ($this->config->isMessagesEnabled($storeId)) {
+            $this->ensureTotalsCollected($item);
             $messages = $item->getMessage(false);
             $result['discount_messages'] = is_array($messages) ? array_values($messages) : [];
         }
 
         return $result;
+    }
+
+    /**
+     * Trigger totals collection if not yet done in this request
+     *
+     * The AddItemMessagesObserver fires on sales_quote_collect_totals_after,
+     * which populates in-memory item messages. Section data item rendering
+     * may run before Magento collects totals, so we ensure it happens first.
+     * The getTotalsCollectedFlag() check prevents double collection.
+     *
+     * @param Item $item
+     * @return void
+     */
+    private function ensureTotalsCollected(Item $item): void
+    {
+        $quote = $item->getQuote();
+        if (!$quote->getTotalsCollectedFlag()) {
+            $quote->collectTotals();
+        }
     }
 }
