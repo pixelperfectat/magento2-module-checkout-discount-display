@@ -51,7 +51,7 @@ class ItemMessageService implements ItemMessageServiceInterface
 
         if ($simpleAction === Rule::BY_PERCENT_ACTION) {
             $item->addMessage((string) __(
-                'Your existing %1%% discount is better than the coupon\'s %2%% — keeping the better price.',
+                'Your existing %1% discount is better than the coupon\'s %2% — keeping the better price.',
                 number_format((float) ($params['existingDiscountPercent'] ?? 0), 0),
                 number_format((float) ($params['ruleDiscountPercent'] ?? 0), 0),
             ));
@@ -75,7 +75,7 @@ class ItemMessageService implements ItemMessageServiceInterface
 
         if ($simpleAction === Rule::BY_PERCENT_ACTION) {
             $item->addMessage((string) __(
-                'Coupon adjusted to %1%% (from %2%%) — this product already has a %3%% discount.',
+                'Coupon adjusted to %1% (from %2%) — this product already has a %3% discount.',
                 number_format((float) ($params['additionalDiscountPercent'] ?? 0), 0),
                 number_format((float) ($params['ruleDiscountPercent'] ?? 0), 0),
                 number_format((float) ($params['existingDiscountPercent'] ?? 0), 0),
