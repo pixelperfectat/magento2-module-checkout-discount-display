@@ -22,9 +22,10 @@ class ItemPriceResolver implements ItemPriceResolverInterface
      */
     public function hasDiscount(AbstractItem $item): bool
     {
-        $regularPrice = $this->getRegularPrice($item);
-        $calculationPrice = (float) $item->getCalculationPrice();
+        $product = $item->getProduct();
+        $regularPrice = (float) $product->getPrice();
+        $finalPrice = (float) $product->getFinalPrice();
 
-        return abs($regularPrice - $calculationPrice) > self::PRICE_EPSILON;
+        return ($regularPrice - $finalPrice) > self::PRICE_EPSILON;
     }
 }
