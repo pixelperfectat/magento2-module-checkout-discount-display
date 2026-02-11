@@ -28,7 +28,7 @@ class CartItemDiscountMessages implements ResolverInterface
         }
 
         $storeId = (int) $this->storeManager->getStore()->getId();
-        if (!$this->config->isMessagesEnabled($storeId)) {
+        if (!$this->config->isGraphqlMessagesEnabled($storeId)) {
             return null;
         }
 

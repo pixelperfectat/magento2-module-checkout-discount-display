@@ -20,13 +20,19 @@ class AddItemMessagesObserver implements ObserverInterface
     /**
      * Add per-item discount messages after totals collection
      *
+     * Messages are populated here for all channels; individual channel checks
+     * happen at the rendering layer (template, plugin, resolver).
+     *
      * @param Observer $observer
      * @return void
      */
     public function execute(Observer $observer): void
     {
         $storeId = (int) $this->storeManager->getStore()->getId();
-        if (!$this->config->isMessagesEnabled($storeId)) {
+        if (!$this->config->isCartMessagesEnabled($storeId)
+            && !$this->config->isMiniCartMessagesEnabled($storeId)
+            && !$this->config->isGraphqlMessagesEnabled($storeId)
+        ) {
             return;
         }
 

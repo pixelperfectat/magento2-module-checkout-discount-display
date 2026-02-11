@@ -10,17 +10,23 @@
             <group id="general" translate="label" type="text" sortOrder="10"
                    showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
-                <field id="enable_messages" translate="label comment" type="select" sortOrder="10"
+                <field id="enable_messages_cart" translate="label comment" type="select" sortOrder="10"
                        showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Discount Messages</label>
+                    <label>Enable Messages on Cart Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Show per-item messages explaining discount exclusions, coupon discounts, and affiliate discounts.</comment>
+                    <comment>Show per-item discount messages on the full cart page.</comment>
                 </field>
-                <field id="enable_strikethrough" translate="label comment" type="select" sortOrder="20"
+                <field id="enable_messages_minicart" translate="label comment" type="select" sortOrder="20"
                        showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Strikethrough Pricing</label>
+                    <label>Enable Messages in Mini Cart</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Show the regular catalog price crossed out next to the discounted price on cart line items.</comment>
+                    <comment>Show per-item discount messages in the mini cart (cart drawer).</comment>
+                </field>
+                <field id="enable_messages_graphql" translate="label comment" type="select" sortOrder="30"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Messages in GraphQL</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Expose per-item discount messages via the GraphQL API.</comment>
                 </field>
             </group>
         </section>

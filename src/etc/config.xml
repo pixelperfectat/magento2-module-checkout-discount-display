@@ -4,8 +4,9 @@
     <default>
         <checkout_discount_display>
             <general>
-                <enable_messages>1</enable_messages>
-                <enable_strikethrough>1</enable_strikethrough>
+                <enable_messages_cart>1</enable_messages_cart>
+                <enable_messages_minicart>1</enable_messages_minicart>
+                <enable_messages_graphql>1</enable_messages_graphql>
             </general>
         </checkout_discount_display>
     </default>

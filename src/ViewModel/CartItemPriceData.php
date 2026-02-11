@@ -20,14 +20,14 @@ class CartItemPriceData implements ArgumentInterface
     }
 
     /**
-     * Check if strikethrough pricing is enabled for the current store
+     * Check if cart page messages are enabled for the current store
      *
      * @return bool
      */
-    public function isEnabled(): bool
+    public function isCartMessagesEnabled(): bool
     {
         $storeId = (int) $this->storeManager->getStore()->getId();
-        return $this->config->isStrikethroughEnabled($storeId);
+        return $this->config->isCartMessagesEnabled($storeId);
     }
 
     /**

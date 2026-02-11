@@ -22,8 +22,8 @@ class AddPriceDataToSectionData
     /**
      * Add regular price, discount flag and discount messages to section data
      *
-     * Ensures quote totals are collected before reading item messages, since
-     * the observer that populates messages fires during collectTotals().
+     * Strikethrough data is always added. Messages are controlled by the
+     * mini cart toggle since section data feeds the cart drawer.
      *
      * @param AbstractItem $subject
      * @param array<string, mixed> $result
@@ -34,17 +34,14 @@ class AddPriceDataToSectionData
      */
     public function afterGetItemData(AbstractItem $subject, array $result, Item $item): array
     {
+        $regularPrice = $this->priceResolver->getRegularPrice($item);
+
+        $result['regular_price'] = $regularPrice;
+        $result['regular_price_formatted'] = $this->priceCurrency->format($regularPrice, false);
+        $result['has_discount'] = $this->priceResolver->hasDiscount($item);
+
         $storeId = (int) $this->storeManager->getStore()->getId();
-
-        if ($this->config->isStrikethroughEnabled($storeId)) {
-            $regularPrice = $this->priceResolver->getRegularPrice($item);
-
-            $result['regular_price'] = $regularPrice;
-            $result['regular_price_formatted'] = $this->priceCurrency->format($regularPrice, false);
-            $result['has_discount'] = $this->priceResolver->hasDiscount($item);
-        }
-
-        if ($this->config->isMessagesEnabled($storeId)) {
+        if ($this->config->isMiniCartMessagesEnabled($storeId)) {
             $this->ensureTotalsCollected($item);
             $messages = $item->getMessage(false);
             $result['discount_messages'] = is_array($messages) ? array_values($messages) : [];
