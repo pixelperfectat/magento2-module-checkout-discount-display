@@ -12,7 +12,7 @@
         },
         {
             "type": "path",
-            "url": "../../../magento2-module-discount-exclusion"
+            "url": "../magento2-module-discount-exclusion"
         }
     ],
     "require": {
