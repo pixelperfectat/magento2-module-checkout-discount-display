@@ -3,4 +3,12 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="PixelPerfect\CheckoutDiscountDisplay\Api\ConfigInterface"
                 type="PixelPerfect\CheckoutDiscountDisplay\Service\Config"/>
+    <preference for="PixelPerfect\CheckoutDiscountDisplay\Api\AffiliateDiscountResolverInterface"
+                type="PixelPerfect\CheckoutDiscountDisplay\Service\AffiliateDiscountResolver"/>
+
+    <type name="PixelPerfect\CheckoutDiscountDisplay\Service\AffiliateDiscountResolver">
+        <arguments>
+            <argument name="affiliateQuoteResolver" xsi:type="null"/>
+        </arguments>
+    </type>
 </config>
