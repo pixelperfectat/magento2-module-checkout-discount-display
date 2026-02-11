@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="checkout_discount_display" translate="label" type="text" sortOrder="301"
+                 showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Checkout Discount Display</label>
+            <tab>sales</tab>
+            <resource>Magento_SalesRule::config_promo</resource>
+            <group id="general" translate="label" type="text" sortOrder="10"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="enable_messages" translate="label comment" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Discount Messages</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Show per-item messages explaining discount exclusions, coupon discounts, and affiliate discounts.</comment>
+                </field>
+                <field id="enable_strikethrough" translate="label comment" type="select" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Strikethrough Pricing</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Show the regular catalog price crossed out next to the discounted price on cart line items.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
