@@ -7,6 +7,8 @@
                 type="PixelPerfect\CheckoutDiscountDisplay\Service\AffiliateDiscountResolver"/>
     <preference for="PixelPerfect\CheckoutDiscountDisplay\Api\ItemPriceResolverInterface"
                 type="PixelPerfect\CheckoutDiscountDisplay\Service\ItemPriceResolver"/>
+    <preference for="PixelPerfect\CheckoutDiscountDisplay\Api\ItemMessageServiceInterface"
+                type="PixelPerfect\CheckoutDiscountDisplay\Service\ItemMessageService"/>
 
     <type name="PixelPerfect\CheckoutDiscountDisplay\Service\AffiliateDiscountResolver">
         <arguments>
