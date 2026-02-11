@@ -15,4 +15,9 @@
             <argument name="affiliateQuoteResolver" xsi:type="null"/>
         </arguments>
     </type>
+
+    <type name="Magento\Checkout\CustomerData\AbstractItem">
+        <plugin name="checkout_discount_display_add_price_data"
+                type="PixelPerfect\CheckoutDiscountDisplay\Plugin\AddPriceDataToSectionData"/>
+    </type>
 </config>
