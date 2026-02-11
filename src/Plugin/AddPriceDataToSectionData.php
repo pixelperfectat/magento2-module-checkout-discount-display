@@ -20,7 +20,7 @@ class AddPriceDataToSectionData
     }
 
     /**
-     * Add regular price and discount flag to section data
+     * Add regular price, discount flag and discount messages to section data
      *
      * @param AbstractItem $subject
      * @param array<string, mixed> $result
@@ -32,15 +32,19 @@ class AddPriceDataToSectionData
     public function afterGetItemData(AbstractItem $subject, array $result, Item $item): array
     {
         $storeId = (int) $this->storeManager->getStore()->getId();
-        if (!$this->config->isStrikethroughEnabled($storeId)) {
-            return $result;
+
+        if ($this->config->isStrikethroughEnabled($storeId)) {
+            $regularPrice = $this->priceResolver->getRegularPrice($item);
+
+            $result['regular_price'] = $regularPrice;
+            $result['regular_price_formatted'] = $this->priceCurrency->format($regularPrice, false);
+            $result['has_discount'] = $this->priceResolver->hasDiscount($item);
         }
 
-        $regularPrice = $this->priceResolver->getRegularPrice($item);
-
-        $result['regular_price'] = $regularPrice;
-        $result['regular_price_formatted'] = $this->priceCurrency->format($regularPrice, false);
-        $result['has_discount'] = $this->priceResolver->hasDiscount($item);
+        if ($this->config->isMessagesEnabled($storeId)) {
+            $messages = $item->getMessage(false);
+            $result['discount_messages'] = is_array($messages) ? array_values($messages) : [];
+        }
 
         return $result;
     }
