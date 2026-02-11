@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <checkout_discount_display>
+            <general>
+                <enable_messages>1</enable_messages>
+                <enable_strikethrough>1</enable_strikethrough>
+            </general>
+        </checkout_discount_display>
+    </default>
+</config>
