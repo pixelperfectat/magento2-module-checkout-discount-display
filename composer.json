@@ -19,6 +19,9 @@
         "magento/module-checkout": "^100.0",
         "pixelperfectat/magento2-module-discount-exclusion": "*"
     },
+    "suggest": {
+        "hyva-themes/magento2-default-theme": "Required for cart page strikethrough pricing template"
+    },
     "require-dev": {
         "phpunit/phpunit": "^10.0"
     },
