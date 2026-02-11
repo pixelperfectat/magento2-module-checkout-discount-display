@@ -101,7 +101,7 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                     <?php endif; ?>
                     <span class="text-fg-secondary">
                         <span class="sr-only"><?= $escaper->escapeHtml(__('Price')) ?></span>
-                        <?php if ($cartItemPriceData->isEnabled() && $cartItemPriceData->hasDiscount($item)): ?>
+                        <?php if ($cartItemPriceData->hasDiscount($item)): ?>
                             <span class="line-through text-gray-400 text-sm"><?= $escaper->escapeHtml($cartItemPriceData->getRegularPrice($item)) ?></span>
                         <?php endif; ?>
                         <span><?= $block->getUnitPriceHtml($item) ?></span>
@@ -133,7 +133,7 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                 </dl>
             <?php endif;?>
 
-            <?php if ($messages = $block->getMessages()): ?>
+            <?php if ($cartItemPriceData->isCartMessagesEnabled() && ($messages = $block->getMessages())): ?>
                 <?php foreach ($messages as $message): ?>
                     <div class="cart item message <?= $escaper->escapeHtmlAttr($message['type']) ?>">
                         <div><?= $escaper->escapeHtml($message['text']) ?></div>

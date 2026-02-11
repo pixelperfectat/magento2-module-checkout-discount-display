@@ -16,10 +16,10 @@ readonly class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    public function isMessagesEnabled(?int $storeId = null): bool
+    public function isCartMessagesEnabled(?int $storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
-            self::XML_PATH_ENABLE_MESSAGES,
+            self::XML_PATH_ENABLE_MESSAGES_CART,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -28,10 +28,22 @@ readonly class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    public function isStrikethroughEnabled(?int $storeId = null): bool
+    public function isMiniCartMessagesEnabled(?int $storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(
-            self::XML_PATH_ENABLE_STRIKETHROUGH,
+            self::XML_PATH_ENABLE_MESSAGES_MINICART,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isGraphqlMessagesEnabled(?int $storeId = null): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::XML_PATH_ENABLE_MESSAGES_GRAPHQL,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );

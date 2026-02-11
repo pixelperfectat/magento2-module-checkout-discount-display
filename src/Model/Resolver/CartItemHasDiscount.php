@@ -7,16 +7,12 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Quote\Model\Quote\Item;
-use Magento\Store\Model\StoreManagerInterface;
-use PixelPerfect\CheckoutDiscountDisplay\Api\ConfigInterface;
 use PixelPerfect\CheckoutDiscountDisplay\Api\ItemPriceResolverInterface;
 
 class CartItemHasDiscount implements ResolverInterface
 {
     public function __construct(
-        private readonly ConfigInterface $config,
         private readonly ItemPriceResolverInterface $priceResolver,
-        private readonly StoreManagerInterface $storeManager,
     ) {
     }
 
@@ -27,11 +23,6 @@ class CartItemHasDiscount implements ResolverInterface
     {
         if (!isset($value['model'])) {
             throw new LocalizedException(__('"model" value should be specified'));
-        }
-
-        $storeId = (int) $this->storeManager->getStore()->getId();
-        if (!$this->config->isStrikethroughEnabled($storeId)) {
-            return null;
         }
 
         /** @var Item $cartItem */

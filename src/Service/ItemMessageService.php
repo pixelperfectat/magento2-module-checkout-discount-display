@@ -7,12 +7,14 @@ use Magento\Quote\Model\Quote\Item\AbstractItem;
 use Magento\SalesRule\Model\Rule;
 use PixelPerfect\CheckoutDiscountDisplay\Api\AffiliateDiscountResolverInterface;
 use PixelPerfect\CheckoutDiscountDisplay\Api\ItemMessageServiceInterface;
+use PixelPerfect\DiscountExclusion\Api\ConfigInterface as DiscountExclusionConfig;
 
 class ItemMessageService implements ItemMessageServiceInterface
 {
     public function __construct(
         private readonly AffiliateDiscountResolverInterface $affiliateDiscountResolver,
         private readonly PriceCurrencyInterface $priceCurrency,
+        private readonly DiscountExclusionConfig $discountExclusionConfig,
     ) {
     }
 
@@ -29,6 +31,10 @@ class ItemMessageService implements ItemMessageServiceInterface
 
     private function addExclusionMessages(AbstractItem $item): void
     {
+        if (!$this->discountExclusionConfig->isMessagesEnabled()) {
+            return;
+        }
+
         if (!$item->getData('pp_discount_excluded')) {
             return;
         }
@@ -66,6 +72,10 @@ class ItemMessageService implements ItemMessageServiceInterface
 
     private function addBypassAdjustedMessages(AbstractItem $item): void
     {
+        if (!$this->discountExclusionConfig->isMessagesEnabled()) {
+            return;
+        }
+
         if (!$item->getData('pp_discount_bypass_adjusted')) {
             return;
         }
