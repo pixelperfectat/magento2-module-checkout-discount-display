@@ -9,10 +9,6 @@
         {
             "type": "composer",
             "url": "https://repo.magento.com/"
-        },
-        {
-            "type": "path",
-            "url": "../../../magento2-module-discount-exclusion"
         }
     ],
     "require": {
