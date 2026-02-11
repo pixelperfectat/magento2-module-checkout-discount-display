@@ -90,21 +90,25 @@ class ItemMessageService implements ItemMessageServiceInterface
         }
     }
 
+    /**
+     * Add coupon discount message using the actual applied discount amount
+     *
+     * Uses $item->getDiscountAmount() instead of extension attribute discount
+     * descriptions, because the DiscountExclusion module caps discounts after
+     * the extension attributes are populated — making those values stale.
+     *
+     * @param AbstractItem $item
+     * @return void
+     */
     private function addCouponMessages(AbstractItem $item): void
     {
-        $discounts = $item->getExtensionAttributes()?->getDiscounts();
-        if (empty($discounts)) {
+        $totalDiscount = (float) $item->getDiscountAmount();
+        if ($totalDiscount <= 0.0) {
             return;
         }
 
-        $affiliateRuleIds = $this->affiliateDiscountResolver->getAffiliateRuleIds();
-        $couponTotal = 0.0;
-
-        foreach ($discounts as $discount) {
-            if (!in_array($discount->getRuleID(), $affiliateRuleIds, false)) {
-                $couponTotal += $discount->getDiscountData()->getAmount();
-            }
-        }
+        $affiliateAmount = $this->affiliateDiscountResolver->getAffiliateDiscountForItem($item);
+        $couponTotal = $totalDiscount - $affiliateAmount;
 
         if ($couponTotal <= 0.0) {
             return;
