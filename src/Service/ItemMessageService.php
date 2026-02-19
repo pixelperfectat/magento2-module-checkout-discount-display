@@ -84,18 +84,32 @@ class ItemMessageService implements ItemMessageServiceInterface
         $simpleAction = $params['simpleAction'] ?? '';
 
         if ($simpleAction === Rule::BY_PERCENT_ACTION) {
+            $rule = (float) ($params['ruleDiscountPercent'] ?? 0);
+            $additional = (float) ($params['additionalDiscountPercent'] ?? 0);
+
+            if ($additional >= $rule) {
+                return;
+            }
+
             $item->addMessage((string) __(
                 'Already %1% discounted — discount reduced from %2% to %3%.',
                 number_format((float) ($params['existingDiscountPercent'] ?? 0), 0),
-                number_format((float) ($params['ruleDiscountPercent'] ?? 0), 0),
-                number_format((float) ($params['additionalDiscountPercent'] ?? 0), 0),
+                number_format($rule, 0),
+                number_format($additional, 0),
             ));
         } elseif ($simpleAction === Rule::BY_FIXED_ACTION) {
+            $rule = (float) ($params['ruleDiscountAmount'] ?? 0);
+            $additional = (float) ($params['additionalDiscountAmount'] ?? 0);
+
+            if ($additional >= $rule) {
+                return;
+            }
+
             $item->addMessage((string) __(
                 'Already %1 discounted — discount reduced from %2 to %3.',
                 $this->formatPrice((float) ($params['existingDiscountAmount'] ?? 0)),
-                $this->formatPrice((float) ($params['ruleDiscountAmount'] ?? 0)),
-                $this->formatPrice((float) ($params['additionalDiscountAmount'] ?? 0)),
+                $this->formatPrice($rule),
+                $this->formatPrice($additional),
             ));
         }
     }
