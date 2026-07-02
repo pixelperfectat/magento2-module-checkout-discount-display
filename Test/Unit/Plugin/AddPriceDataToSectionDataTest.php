@@ -40,22 +40,28 @@ class AddPriceDataToSectionDataTest extends TestCase
         );
     }
 
-    public function testReturnsUnmodifiedResultWhenDisabled(): void
+    public function testAlwaysAddsPriceData(): void
     {
-        $this->config->method('isStrikethroughEnabled')->with(5)->willReturn(false);
+        $this->config->method('isMiniCartMessagesEnabled')->with(5)->willReturn(false);
+        $this->priceResolver->method('getRegularPrice')->willReturn(100.00);
+        $this->priceResolver->method('hasDiscount')->willReturn(false);
+        $this->priceCurrency->method('format')->with(100.00, false)->willReturn('€100.00');
 
         $subject = $this->createMock(AbstractItem::class);
         $item = $this->createMock(Item::class);
-        $result = ['product_price' => '€80.00'];
+        $result = ['product_price' => '€100.00'];
 
         $output = $this->plugin->afterGetItemData($subject, $result, $item);
 
-        $this->assertArrayNotHasKey('regular_price', $output);
+        $this->assertArrayHasKey('regular_price', $output);
+        $this->assertSame(100.00, $output['regular_price']);
+        $this->assertSame('€100.00', $output['regular_price_formatted']);
+        $this->assertFalse($output['has_discount']);
     }
 
     public function testAddsRegularPriceDataWhenEnabled(): void
     {
-        $this->config->method('isStrikethroughEnabled')->with(5)->willReturn(true);
+        $this->config->method('isMiniCartMessagesEnabled')->with(5)->willReturn(false);
         $this->priceResolver->method('getRegularPrice')->willReturn(100.00);
         $this->priceResolver->method('hasDiscount')->willReturn(true);
         $this->priceCurrency->method('format')->with(100.00, false)->willReturn('€100.00');
@@ -73,7 +79,7 @@ class AddPriceDataToSectionDataTest extends TestCase
 
     public function testHasDiscountFalseWhenNoDifference(): void
     {
-        $this->config->method('isStrikethroughEnabled')->with(5)->willReturn(true);
+        $this->config->method('isMiniCartMessagesEnabled')->with(5)->willReturn(false);
         $this->priceResolver->method('getRegularPrice')->willReturn(100.00);
         $this->priceResolver->method('hasDiscount')->willReturn(false);
         $this->priceCurrency->method('format')->willReturn('€100.00');

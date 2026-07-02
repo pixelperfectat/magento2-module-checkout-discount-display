@@ -40,7 +40,9 @@ class AddItemMessagesObserverTest extends TestCase
 
     public function testSkipsWhenMessagesDisabled(): void
     {
-        $this->config->method('isMessagesEnabled')->with(5)->willReturn(false);
+        $this->config->method('isCartMessagesEnabled')->with(5)->willReturn(false);
+        $this->config->method('isMiniCartMessagesEnabled')->with(5)->willReturn(false);
+        $this->config->method('isGraphqlMessagesEnabled')->with(5)->willReturn(false);
         $this->itemMessageService->expects($this->never())->method('addMessagesForItem');
 
         $this->observer->execute($this->createObserverMock([]));
@@ -48,7 +50,9 @@ class AddItemMessagesObserverTest extends TestCase
 
     public function testProcessesEachVisibleItem(): void
     {
-        $this->config->method('isMessagesEnabled')->with(5)->willReturn(true);
+        $this->config->method('isCartMessagesEnabled')->with(5)->willReturn(true);
+        $this->config->method('isMiniCartMessagesEnabled')->willReturn(false);
+        $this->config->method('isGraphqlMessagesEnabled')->willReturn(false);
 
         $item1 = $this->createMock(AbstractItem::class);
         $item2 = $this->createMock(AbstractItem::class);
@@ -61,7 +65,9 @@ class AddItemMessagesObserverTest extends TestCase
 
     public function testHandlesEmptyCart(): void
     {
-        $this->config->method('isMessagesEnabled')->with(5)->willReturn(true);
+        $this->config->method('isCartMessagesEnabled')->with(5)->willReturn(true);
+        $this->config->method('isMiniCartMessagesEnabled')->willReturn(false);
+        $this->config->method('isGraphqlMessagesEnabled')->willReturn(false);
         $this->itemMessageService->expects($this->never())->method('addMessagesForItem');
 
         $this->observer->execute($this->createObserverMock([]));

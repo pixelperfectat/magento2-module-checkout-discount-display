@@ -19,39 +19,57 @@ class ConfigTest extends TestCase
         $this->config = new Config($this->scopeConfig);
     }
 
-    public function testIsMessagesEnabledReturnsTrueWhenEnabled(): void
+    public function testIsCartMessagesEnabledReturnsTrueWhenEnabled(): void
     {
         $this->scopeConfig->method('isSetFlag')
-            ->with(ConfigInterface::XML_PATH_ENABLE_MESSAGES, 'store', 5)
+            ->with(ConfigInterface::XML_PATH_ENABLE_MESSAGES_CART, 'store', 5)
             ->willReturn(true);
 
-        $this->assertTrue($this->config->isMessagesEnabled(5));
+        $this->assertTrue($this->config->isCartMessagesEnabled(5));
     }
 
-    public function testIsMessagesEnabledReturnsFalseWhenDisabled(): void
+    public function testIsCartMessagesEnabledReturnsFalseWhenDisabled(): void
     {
         $this->scopeConfig->method('isSetFlag')
-            ->with(ConfigInterface::XML_PATH_ENABLE_MESSAGES, 'store', 5)
+            ->with(ConfigInterface::XML_PATH_ENABLE_MESSAGES_CART, 'store', 5)
             ->willReturn(false);
 
-        $this->assertFalse($this->config->isMessagesEnabled(5));
+        $this->assertFalse($this->config->isCartMessagesEnabled(5));
     }
 
-    public function testIsStrikethroughEnabledReturnsTrueWhenEnabled(): void
+    public function testIsMiniCartMessagesEnabledReturnsTrueWhenEnabled(): void
     {
         $this->scopeConfig->method('isSetFlag')
-            ->with(ConfigInterface::XML_PATH_ENABLE_STRIKETHROUGH, 'store', 5)
+            ->with(ConfigInterface::XML_PATH_ENABLE_MESSAGES_MINICART, 'store', 5)
             ->willReturn(true);
 
-        $this->assertTrue($this->config->isStrikethroughEnabled(5));
+        $this->assertTrue($this->config->isMiniCartMessagesEnabled(5));
     }
 
-    public function testIsStrikethroughEnabledReturnsFalseWhenDisabled(): void
+    public function testIsMiniCartMessagesEnabledReturnsFalseWhenDisabled(): void
     {
         $this->scopeConfig->method('isSetFlag')
-            ->with(ConfigInterface::XML_PATH_ENABLE_STRIKETHROUGH, 'store', 5)
+            ->with(ConfigInterface::XML_PATH_ENABLE_MESSAGES_MINICART, 'store', 5)
             ->willReturn(false);
 
-        $this->assertFalse($this->config->isStrikethroughEnabled(5));
+        $this->assertFalse($this->config->isMiniCartMessagesEnabled(5));
+    }
+
+    public function testIsGraphqlMessagesEnabledReturnsTrueWhenEnabled(): void
+    {
+        $this->scopeConfig->method('isSetFlag')
+            ->with(ConfigInterface::XML_PATH_ENABLE_MESSAGES_GRAPHQL, 'store', 5)
+            ->willReturn(true);
+
+        $this->assertTrue($this->config->isGraphqlMessagesEnabled(5));
+    }
+
+    public function testIsGraphqlMessagesEnabledReturnsFalseWhenDisabled(): void
+    {
+        $this->scopeConfig->method('isSetFlag')
+            ->with(ConfigInterface::XML_PATH_ENABLE_MESSAGES_GRAPHQL, 'store', 5)
+            ->willReturn(false);
+
+        $this->assertFalse($this->config->isGraphqlMessagesEnabled(5));
     }
 }
