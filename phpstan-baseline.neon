@@ -1,0 +1,41 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method PixelPerfect\\\\CheckoutDiscountDisplay\\\\Model\\\\Resolver\\\\CartItemDiscountMessages\\:\\:resolve\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Model/Resolver/CartItemDiscountMessages.php
+
+		-
+			message: "#^Method PixelPerfect\\\\CheckoutDiscountDisplay\\\\Model\\\\Resolver\\\\CartItemDiscountMessages\\:\\:resolve\\(\\) has parameter \\$value with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Model/Resolver/CartItemDiscountMessages.php
+
+		-
+			message: "#^Method PixelPerfect\\\\CheckoutDiscountDisplay\\\\Model\\\\Resolver\\\\CartItemDiscountMessages\\:\\:resolve\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Model/Resolver/CartItemDiscountMessages.php
+
+		-
+			message: "#^Method PixelPerfect\\\\CheckoutDiscountDisplay\\\\Model\\\\Resolver\\\\CartItemHasDiscount\\:\\:resolve\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Model/Resolver/CartItemHasDiscount.php
+
+		-
+			message: "#^Method PixelPerfect\\\\CheckoutDiscountDisplay\\\\Model\\\\Resolver\\\\CartItemHasDiscount\\:\\:resolve\\(\\) has parameter \\$value with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Model/Resolver/CartItemHasDiscount.php
+
+		-
+			message: "#^Method PixelPerfect\\\\CheckoutDiscountDisplay\\\\Model\\\\Resolver\\\\CartItemRegularPrice\\:\\:resolve\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Model/Resolver/CartItemRegularPrice.php
+
+		-
+			message: "#^Method PixelPerfect\\\\CheckoutDiscountDisplay\\\\Model\\\\Resolver\\\\CartItemRegularPrice\\:\\:resolve\\(\\) has parameter \\$value with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Model/Resolver/CartItemRegularPrice.php
+
+		-
+			message: "#^Method PixelPerfect\\\\CheckoutDiscountDisplay\\\\Model\\\\Resolver\\\\CartItemRegularPrice\\:\\:resolve\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Model/Resolver/CartItemRegularPrice.php
