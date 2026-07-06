@@ -73,4 +73,4 @@ The module extends the `CartItemPrices` type:
 
 ## License
 
-MIT
+[MIT](LICENSE)
