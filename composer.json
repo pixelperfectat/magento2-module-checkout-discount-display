@@ -3,7 +3,6 @@
     "description": "Per-item discount messages and strikethrough pricing in the cart",
     "type": "magento2-module",
     "license": "MIT",
-    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": "^8.3",
@@ -11,7 +10,7 @@
         "magento/module-checkout": "^100.0",
         "magento/module-quote": "^101.0",
         "magento/module-sales-rule": "^101.0",
-        "pixelperfectat/magento2-module-discount-exclusion": "*"
+        "pixelperfectat/magento2-module-discount-exclusion": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6",
@@ -68,6 +67,10 @@
         {
             "type": "composer",
             "url": "https://repo.magento.com/"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/pixelperfectat/magento2-module-discount-exclusion.git"
         }
     ]
 }
